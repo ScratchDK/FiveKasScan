@@ -57,7 +57,7 @@ class ChangeSettings:
 
     def about_prog(self):
         text_info = '''"FiveKasScan"
-Версия программы: 3.00;
+Версия программы: 3.011724;
 Разработчик: Коваль Дмитрий Владимирович;
 Программа создана специально для 
 Пятого кассационного суда!'''
@@ -597,7 +597,6 @@ def barcode_number_used(barcode):
                                              f'или клавиши: "Пробел" или "esc"')
     keyboard.unblock_key('Return')
     keyboard.unblock_key('Prnt Scrn')
-    return
 
 
 def barcode_not_found(barcode):
@@ -742,7 +741,7 @@ def check_barcode(barcode):
     status = False  # Проверям был ли найден ШПИ
 
 #_______________________________________________________________________________________________________________________
-    label4.config(text = f'Последний ШПИ: {barcode}')
+    label4.config(text = f' Последний ШПИ: {barcode} ')
 
     entry_field.delete(0, END)
 #_______________________________________________________________________________________________________________________
@@ -803,23 +802,23 @@ def check_barcode(barcode):
             end_click = time.time() - start_click
 
             label6.config(text=f'Время сканирования: {round(end_click, 2)}')
-# _______________________________________________________________________________________________________________________
+#_______________________________________________________________________________________________________________________
+# Проверяем был ли использован ШПИ
+    if barcode in numbers_used and verification == 0:
 
+        if qr == 1:
+            status_barcode = 2
+            return
+        else:
+            barcode_number_used(barcode)
+            return
 
-    if barcode in numbers_used and certificate == 0 and qr == 1:   # Проверяем был ли использован ШПИ
-
-        status_barcode = 2
-        return
-
-    elif barcode in numbers_used and certificate == 0:
-
-        barcode_number_used(barcode)
-
-    elif barcode in numbers_used and certificate == 1:
+    elif barcode in numbers_used and verification == 1:
         return
     else:
         numbers_used.append(barcode)
 
+    print(f'numbers_used = {numbers_used}')
 
     scroll_found_all.config(state=NORMAL)
     scroll_found_one.config(state=NORMAL)
@@ -1303,7 +1302,7 @@ label3 = Label(window, text = 'Для сканирования ШПИ,\n'
                               'курсор должен находиться в поле ввода!', font=("Times New Roman", 14), fg="black")
 label3.grid(column=1, row=0, **geometry)
 
-label4 = Label(window, text = f'Последний ШПИ: {0}', font=("Times New Roman", 14), fg="black", relief=RIDGE)
+label4 = Label(window, text = f' Последний ШПИ: {0} ', font=("Times New Roman", 14), fg="black", relief=RIDGE)
 label4.grid(column=1, row=2, **geometry)
 
 label5 = Label(window)
